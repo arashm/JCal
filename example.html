@@ -12,12 +12,13 @@
     <script src="build/build.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" charset="utf-8">
       var jcal = require('jcal');
+      var jdate = require('jcal/lib/jdate.js');
       var conf = {
         field: document.querySelector('.container')
       }
       jj = jcal(conf);
       jj.on('change', function(date){
-        console.log(date)
+        console.log(date.format('dddd DD MMMM YYYY'))
       });
     </script>
   </body>
