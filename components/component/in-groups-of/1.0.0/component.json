@@ -1,0 +1,13 @@
+{
+  "name": "in-groups-of",
+  "description": "Return an array of arrays in groups of N",
+  "version": "1.0.0",
+  "keywords": [],
+  "dependencies": {},
+  "development": {},
+  "scripts": [
+    "index.js"
+  ],
+  "license": "MIT",
+  "repository": "component/in-groups-of"
+}

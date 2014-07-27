@@ -1,0 +1,34 @@
+{
+  "name": "jcal",
+  "version": "0.0.1",
+  "description": "A Jalali/Shamsi/Sun Calendar",
+  "keywords": [
+    "date",
+    "calendar",
+    "jalali",
+    "sun",
+    "shamsi"
+  ],
+  "repository": "arashm/jcal",
+  "scripts": [
+    "index.js",
+    "lib/jalali.js",
+    "lib/jdate.js",
+    "lib/jcal.js",
+    "lib/template.js"
+  ],
+  "styles": [
+    "styles/styles.css"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "component/emitter": "*",
+    "component/event": "*",
+    "component/domify": "*",
+    "component/classes": "*",
+    "component/map": "*",
+    "component/in-groups-of": "1.0.0",
+    "component/object": "*",
+    "stephenmathieson/normalize": "*"
+  }
+}
