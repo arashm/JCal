@@ -12,14 +12,23 @@
     <script src="build/build.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" charset="utf-8">
       var jcal = require('jcal');
-      var jdate = require('jcal/lib/jdate.js');
       var conf = {
-        field: document.querySelector('.container')
-      }
-      jj = jcal(conf);
-      jj.on('change', function(date){
+        // Bind the calendar to an element
+        field: document.querySelector('.container'),
+
+        // Set the initial date
+        initialDate: new jdate,
+
+        // The format of calendar date title to show
+        title_format: 'MMMM YYYY'
+      };
+      
+      mini_cal = jcal(conf);
+      
+      mini_cal.on('change', function(date){
         console.log(date.format('dddd DD MMMM YYYY'))
       });
+
     </script>
   </body>
 </html>
