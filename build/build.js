@@ -1522,8 +1522,8 @@ function jCal(conf) {
 Emitter(jCal.prototype);
 
 jCal.prototype.show = function(date) {
-  this._date = date;
-  this.body.innerHTML = generateMonth(date.getYear(), date.getMonth()).join("\n");
+  this._date = new jdate(date);
+  this.body.innerHTML = generateMonth(this._date.getYear(), this._date.getMonth()).join("\n");
   this.updateTitle();
   this.el.appendChild(this.cal);
   return this;

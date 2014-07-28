@@ -13,11 +13,12 @@
     <script type="text/javascript" charset="utf-8">
       var jcal = require('jcal');
       var conf = {
-        // Bind the calendar to an element
+        // Bind the calendar to an element. Default is body.
         field: document.querySelector('.container'),
 
-        // Set the initial date
-        initialDate: new jdate,
+        // Set the initial date. Set either Date object or an array
+        // of Jalali date like [1393, 5, 2]. Default is today.
+        initialDate: [1393, 5, 2],
 
         // The format of calendar date title to show
         title_format: 'MMMM YYYY'
