@@ -37,7 +37,6 @@ Report bugs and suggest feature in [issue tracker](https://github.com/arashm/Jal
 ## ToDo
 * Add CSS styles for bigger calenders
 * Add support for Persian numbers
-* Add documentation
 
 ## License
 
