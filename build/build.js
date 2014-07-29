@@ -1214,16 +1214,9 @@ var MONTH_NAMES = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر',
 var ABBR_DAYS = ['۱ش', '۲ش', '۳ش', '۴ش', '۵ش', 'ج', 'ش'];
 var DAYS_NAMES = ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه', 'شنبه'];
 
-var to_jalali = function(date) {
-  var jdate = jalali.d2j(jalali.g2d(date.getFullYear(), date.getMonth() + 1, date.getDate()));
-  return [jdate.jy, jdate.jm, jdate.jd]
-}
-
-var to_gregorian = function(year, month, day) {
-  var gdate = jalali.d2g(jalali.j2d(year, month, day));
-  return new Date(gdate.gy, gdate.gm - 1, gdate.gd);
-}
-
+/*
+ * Helper Functions
+ */
 var fix_month = function(year, month) {
   if (month > 12 || month <= 0) {
     var yearDiff = Math.floor((month - 1) / 12);
@@ -1290,6 +1283,12 @@ var replaceDay = function(str, date) {
   }
  }
 
+ /*
+  * Initialize jDate with either a Date object or an Array of
+  * Jalali date: [1393, 5, 3]
+  *
+  * @params {Array, Date} date
+  */
 function jDate(_date) {
   var date, _d
   this._d = _date || new Date;
@@ -1299,28 +1298,53 @@ function jDate(_date) {
     });
     this._d = this.to_gregorian();
   } else if (this._d instanceof Date) {
-    this.date = to_jalali(this._d);
+    this.date = jDate.to_jalali(this._d);
   }
 }
 
+/*
+ * Converts jDate date to Gregorian
+ */
 jDate.prototype.to_gregorian = function() {
-  return to_gregorian(this.date[0], this.date[1], this.date[2]);
+  return jDate.togregorian(this.date[0], this.date[1], this.date[2]);
 }
 
+/*
+ * Shows Jalali's full year, ex: 1393
+ *
+ * @return {Integer}
+ */
 jDate.prototype.getYear = function() {
   return this.date[0];
 }
 
+/*
+ * Sets the Jalali full year
+ *
+ * @params {Number} year
+ * @return {jDate}
+ */
 jDate.prototype.setYear = function(year) {
   this.date[0] = parseInt(year);
   this._d = this.to_gregorian;
   return this
 }
 
+/*
+ * Shows Jalali month number.
+ *
+ * @return {Number} Jalali month number
+ */
 jDate.prototype.getMonth = function() {
   return this.date[1];
 }
 
+/*
+ * Sets the Jalali month number. An integer between 0 and 11
+ *
+ * @params {Number} month
+ * @returns {jDate}
+ */
 jDate.prototype.setMonth = function(month) {
   fixed = fix_month(this.getYear(), parseInt(month));
   this.date[0] = fixed[0];
@@ -1329,16 +1353,33 @@ jDate.prototype.setMonth = function(month) {
   return this
 }
 
+/*
+ * Shows Jalali day number. A number between 0 to 31
+ *
+ * @return {Number} Jalali day number
+ */
 jDate.prototype.getDate = function() {
   return this.date[2];
 }
 
+/*
+ * Sets Jalali day number. A number between 0 to 31
+ *
+ * @params {Number} date
+ * @return {jDate}
+ */
 jDate.prototype.setDate = function(date) {
   this.date[2] = parseInt(date);
   this._d = this.to_gregorian;
   return this
 }
 
+/*
+ * Returns a formated output of current date
+ *
+ * @params {String} format
+ * @return {String}
+ */
 jDate.prototype.format = function(format) {
   format = replaceYear(format, this);
   format = replaceMonth(format, this);
@@ -1346,10 +1387,47 @@ jDate.prototype.format = function(format) {
   return format;
 }
 
+/*
+ * Coverts a Gregorian date to Jalali date
+ *
+ * @params {Date} date
+ * @return {Array}
+ */
+jDate.to_jalali = function(date) {
+  var jdate = jalali.d2j(jalali.g2d(date.getFullYear(), date.getMonth() + 1, date.getDate()));
+  return [jdate.jy, jdate.jm, jdate.jd]
+}
+
+/*
+ * converts a Jalali date to Gregorian
+ *
+ * @params {Number} year
+ * @params {Number} month
+ * @params {Number} day
+ * @return {Date}
+ */
+jDate.togregorian = function(year, month, day) {
+  var gdate = jalali.d2g(jalali.j2d(year, month, day));
+  return new Date(gdate.gy, gdate.gm - 1, gdate.gd);
+}
+
+/*
+ * Checks if a given year is a leap year or not
+ *
+ * @params {Number} year
+ * @return {Boolean}
+ */
 jDate.isLeapYear = function(year) {
   return jalali.jalCal(year).leap === 0
 }
 
+/*
+ * Returns month length
+ *
+ * @params {Number} year
+ * @params {Number} month
+ * @return {Number}
+ */
 jDate.daysInMonth = function (year, month) {
   year += ~~(month / 12)
   month = month - ~~(month / 12) * 12
@@ -1369,7 +1447,6 @@ jDate.daysInMonth = function (year, month) {
 }
 
 
-
 });
 
 require.register("jcal/lib/jcal.js", function (exports, module) {
@@ -1386,24 +1463,9 @@ var event = require("component~event@0.1.4")
 
 module.exports = jCal;
 
-// Default options
-defaults = {
-  // Bind the picker to a form field
-  field: document.querySelector('body'),
-
-  // Set the initial date
-  initialDate: new jdate,
-
-  // Either show abbreviation of week names or not
-  showAbbreviated: true,
-
-  // TODO: Either to use persian numbers and names or not
-  //persian: false,
-
-  // The format of title date to show
-  title_format: 'MMMM YYYY'
-};
-
+/*
+ * Helper Functions
+ */
 var generateDay = function(year, month, day, selected, today, empty) {
   var cla = [];
   if (empty) {
@@ -1468,6 +1530,37 @@ var generateMonth = function(year, month){
   return weeks;
 }
 
+/*
+ * Default configs
+ */
+defaults = {
+  // Bind the picker to a form field
+  field: document.querySelector('body'),
+
+  // Set the initial date
+  initialDate: new jdate,
+
+  // Either show abbreviation of week names or not
+  showAbbreviated: true,
+
+  // TODO: Either to use persian numbers and names or not
+  //persian: false,
+
+  // The format of title date to show
+  title_format: 'MMMM YYYY'
+};
+
+/*
+ * Initialize new jCal instance with specified configs
+ *
+ * Events:
+ *  `prev`   : when the prev link is clicked
+ *  `next`   : when the next link is clicked
+ *  `change` : when user selects a date from calendar
+ *
+ * @params {Object} user configs
+ * @api public
+ */
 function jCal(conf) {
   if (!(this instanceof jCal)) {
     return new jCal(conf)
@@ -1521,41 +1614,82 @@ function jCal(conf) {
 */
 Emitter(jCal.prototype);
 
+/*
+ * Renders selected date into calendar body
+ *
+ * @params {Array, Date} an Array of Jalali date ([1393, 5, 2]) or a Date object
+ * @return {jCal}
+ */
 jCal.prototype.show = function(date) {
-  this._date = new jdate(date);
+  if (date.constructor.name == 'jDate') {
+    this._date = date;
+  } else {
+    this._date = new jdate(date);
+  }
   this.body.innerHTML = generateMonth(this._date.getYear(), this._date.getMonth()).join("\n");
   this.updateTitle();
   this.el.appendChild(this.cal);
   return this;
 }
 
+/*
+ * Shows the previous month
+ *
+ * @return {jDate}
+ */
 jCal.prototype.prevMonth = function() {
   date = this._date;
   date.setMonth(date.getMonth() - 1)
   return date;
 }
 
+/*
+ * Shows the next month
+ *
+ * @return {jDate}
+ */
 jCal.prototype.nextMonth = function() {
   date = this._date;
   date.setMonth(date.getMonth() + 1);
   return date;
 }
 
+/*
+ * Renders the previous month into calendar body
+ *
+ * @return {jCal}
+ */
 jCal.prototype.prev = function() {
   this.show(this.prevMonth());
   return this;
 }
 
+/*
+ * Renders the next month into calendatr body
+ *
+ * @return {jCal}
+ */
 jCal.prototype.next = function() {
   this.show(this.nextMonth());
   return this;
 }
 
+/*
+ * Updates title of calendar
+ *
+ * @return {jCal}
+ */
 jCal.prototype.updateTitle = function() {
   this.title.textContent = this._date.format(this._c.title_format)
   return this;
 }
 
+/*
+ * Selects new date
+ * ToDo: This function should mark the date as selected.
+ *
+ * @return {jCal}
+ */
 jCal.prototype.select = function(date) {
   this.selected = date;
   return this;

@@ -24,7 +24,7 @@
         title_format: 'MMMM YYYY'
       };
       
-      mini_cal = jcal(conf);
+      var mini_cal = jcal(conf);
       
       mini_cal.on('change', function(date){
         console.log(date.format('dddd DD MMMM YYYY'))
