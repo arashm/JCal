@@ -1,0 +1,24 @@
+{
+  "name": "jcal",
+  "version": "0.1.0",
+  "description": "A Jalali calendar generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/arashm/Jalali-Calendar.git"
+  },
+  "keywords": [
+    "jalali",
+    "calendar",
+    "solar"
+  ],
+  "author": "Arash Mousavi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arashm/Jalali-Calendar/issues"
+  },
+  "homepage": "https://github.com/arashm/Jalali-Calendar"
+}
