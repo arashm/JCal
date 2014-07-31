@@ -42,7 +42,7 @@ gulp.task('scripts', function() {
 
 // Clean
 gulp.task('clean', function() {
-  return gulp.src(['dist/styles', 'dist/scripts', 'dist/images'], {read: false})
+  return gulp.src(['build/styles', 'build/js'], {read: false})
     .pipe(clean());
 });
 
