@@ -1466,6 +1466,14 @@ module.exports = jCal;
 /*
  * Helper Functions
  */
+var generateHeader = function(daysArray, fullNames) {
+  var header = [];
+  for (var i = 0; i < daysArray.length; ++i) {
+    header.push("<td><abbr title='" + fullNames[i]  + "'>" + daysArray[i] + "</abbr></td>")
+  }
+  return header;
+}
+
 var generateDay = function(year, month, day, selected, today, empty) {
   var cla = [];
   if (empty) {
@@ -1547,8 +1555,12 @@ defaults = {
   //persian: false,
 
   // The format of title date to show
-  title_format: 'MMMM YYYY'
+  title_format: 'MMMM YYYY',
+
+  l10n_short_days: ['ش', '۱ش', '۲ش', '۳ش', '۴ش', '۵ش', 'ج'],
+  l10n_long_days: ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه']
 };
+
 
 /*
  * Initialize new jCal instance with specified configs
@@ -1571,6 +1583,7 @@ function jCal(conf) {
   this.el = this._c.field;
   this.cal = domify(template);
   this.head = this.cal.tHead;
+  this.header = this.head.querySelector('.jcal-title');
   this.title = this.head.querySelector('.jcal-year');
   this.body = this.cal.tBodies[0];
   this.on('prev', this.prev);
@@ -1626,6 +1639,13 @@ jCal.prototype.show = function(date) {
   } else {
     this._date = new jdate(date);
   }
+
+  if (this._c.showAbbreviated) {
+    this.header.innerHTML = generateHeader(this._c.l10n_short_days, this._c.l10n_long_days).join("\n");
+  } else {
+    this.header.innerHTML = generateHeader(this._c.l10n_long_days, this._c.l10n_long_days).join("\n");
+  }
+
   this.body.innerHTML = generateMonth(this._date.getYear(), this._date.getMonth()).join("\n");
   this.updateTitle();
   this.el.appendChild(this.cal);
@@ -1707,27 +1727,6 @@ module.exports = "<table class=\'jcal-table\'>\
         <td class='jcal-next'></td>\
       </tr>\
       <tr class=\'jcal-title\'>\
-        <td>\
-          <abbr title=\'شنبه\'>ش</abbr>\
-        </td>\
-        <td>\
-          <abbr title=\'یکشنبه\'>ش۱</abbr>\
-        </td>\
-        <td>\
-          <abbr title=\'دوشنبه\'>ش۲</abbr>\
-        </td>\
-        <td>\
-          <abbr title=\'سه‌شنبه\'>ش۳</abbr>\
-        </td>\
-        <td>\
-          <abbr title=\'چهارشنبه\'>ش۴</abbr>\
-        </td>\
-        <td>\
-          <abbr title=\'پنج‌شنبه\'>ش۵</abbr>\
-        </td>\
-        <td>\
-          <abbr title=\'جمعه\'>ج</abbr>\
-        </td>\
       </tr>\
     </thead>\
     <tbody class=\'jcal-body\'>\
