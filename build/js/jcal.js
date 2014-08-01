@@ -1634,7 +1634,7 @@ Emitter(jCal.prototype);
  * @return {jCal}
  */
 jCal.prototype.show = function(date) {
-  if (date.constructor.name == 'jDate') {
+  if (date._d) {
     this._date = date;
   } else {
     this._date = new jdate(date);
