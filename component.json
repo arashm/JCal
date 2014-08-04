@@ -12,13 +12,11 @@
   "repository": "arashm/jcal",
   "scripts": [
     "index.js",
-    "lib/jalali.js",
-    "lib/jdate.js",
     "lib/jcal.js",
     "lib/template.js"
   ],
   "styles": [
-    "styles/styles.css"
+    "styles/styles.sass"
   ],
   "license": "MIT",
   "dependencies": {
@@ -29,6 +27,7 @@
     "component/map": "*",
     "component/in-groups-of": "1.0.0",
     "component/object": "*",
-    "stephenmathieson/normalize": "*"
+    "stephenmathieson/normalize": "*",
+    "arashm/jdate": "*"
   }
 }
