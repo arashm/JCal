@@ -1497,15 +1497,15 @@ var generateHeader = function(daysArray, fullNames) {
 var generateDay = function(year, month, day, selected, today, empty) {
   var cla = [];
   if (empty) {
-    return '<td class=\'jcal-empty\'></td>';
+    return '<td class=\'jcal-body__day--empty\'></td>';
   }
   if (selected) {
-    cla.push('jcal-selected');
+    cla.push('jcal-body__day--selected');
   }
   if (today) {
-    cla.push('jcal-today');
+    cla.push('jcal-body__day--today');
   }
-  return "<td class='jcal-day'><a href='#' data-date='" + [year, month, day].join('-') + "' class='" + (cla.join(' ')) + "'>" + day + "</a></td>";
+  return "<td class='jcal-body__day'><a href='#' data-date='" + [year, month, day].join('-') + "' class='" + (cla.join(' ')) + "'>" + day + "</a></td>";
 };
 
 var generateWeek = function (days) {
@@ -1516,6 +1516,7 @@ var generateMonth = function(year, month){
   date = new jdate([year, month, 1]);
   today = new jdate;
   days_in_month = jdate.daysInMonth(date.getFullYear(), date.getMonth());
+  console.log([days_in_month, date.getFullYear(), date.getMonth()]);
   starting_day_of_month = date._d.getDay();
   ending_day_of_month = new jdate([year, month, days_in_month])._d.getDay();
 
@@ -1604,14 +1605,14 @@ function jCal(conf) {
   this.cal = domify(template);
   this.head = this.cal.tHead;
   this.header = this.head.querySelector('.jcal-title');
-  this.title = this.head.querySelector('.jcal-year');
+  this.title = this.head.querySelector('.jcal-controls__year');
   this.body = this.cal.tBodies[0];
   this.on('prev', this.prev);
   this.on('next', this.next);
   this.show(this._c.initialDate);
 
   // emit "prev"
-  event.bind(this.el.querySelector('.jcal-prev'), 'click', normalize(function(e){
+  event.bind(this.el.querySelector('.jcal-controls__prev'), 'click', normalize(function(e){
     e.preventDefault();
 
     self.emit('prev');
@@ -1619,7 +1620,7 @@ function jCal(conf) {
   }));
 
   // emit "next"
-  event.bind(this.el.querySelector('.jcal-next'), 'click', normalize(function(e){
+  event.bind(this.el.querySelector('.jcal-controls__next'), 'click', normalize(function(e){
     e.preventDefault();
 
     self.emit('next');
@@ -1632,10 +1633,10 @@ function jCal(conf) {
     var el = e.target;
     var date = new jdate(el.getAttribute('data-date').split('-'));
     // remove previos selected date
-    if (self.body.querySelector('.jcal-selected')) {
-      classes(self.body.querySelector('.jcal-selected')).remove('jcal-selected');
+    if (self.body.querySelector('.jcal-body__day--selected')) {
+      classes(self.body.querySelector('.jcal-body__day--selected')).remove('jcal-body__day--selected');
     }
-    classes(el).add('jcal-selected');
+    classes(el).add('jcal-body__day--selected');
     self.select(date);
     self.emit('change', date);
     return false;
@@ -1680,6 +1681,7 @@ jCal.prototype.show = function(date) {
  */
 jCal.prototype.prevMonth = function() {
   date = this._date;
+  console.log(date);
   date.setMonth(date.getMonth() - 1)
   return date;
 }
@@ -1743,9 +1745,9 @@ require.register("jcal/lib/template.js", function (exports, module) {
 module.exports = "<table class=\'jcal-table\'>\
     <thead>\
       <tr class='jcal-controls'>\
-        <td class='jcal-prev'></td>\
-        <td class='jcal-year' colspan='5'></td>\
-        <td class='jcal-next'></td>\
+        <td class='jcal-controls__prev'></td>\
+        <td class='jcal-controls__year' colspan='5'></td>\
+        <td class='jcal-controls__next'></td>\
       </tr>\
       <tr class=\'jcal-title\'>\
       </tr>\
