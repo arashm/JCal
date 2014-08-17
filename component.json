@@ -28,6 +28,6 @@
     "component/in-groups-of": "1.0.0",
     "component/object": "*",
     "stephenmathieson/normalize": "*",
-    "arashm/jdate": "*"
+    "arashm/jdate": "v0.1.1"
   }
 }

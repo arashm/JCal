@@ -957,13 +957,35 @@ exports.normalize = function (event) {
 
 });
 
-require.register("arashm~jdate@master", function (exports, module) {
-module.exports = require("arashm~jdate@master/lib/jdate.js");
+require.register("component~in-groups-of@1.0.0", function (exports, module) {
+
+module.exports = function(arr, n){
+  var ret = [];
+  var group = [];
+  var len = arr.length;
+  var per = len * (n / len);
+
+  for (var i = 0; i < len; ++i) {
+    group.push(arr[i]);
+    if ((i + 1) % n == 0) {
+      ret.push(group);
+      group = [];
+    }
+  }
+
+  if (group.length) ret.push(group);
+
+  return ret;
+};
+});
+
+require.register("arashm~jdate@v0.1.1", function (exports, module) {
+module.exports = require("arashm~jdate@v0.1.1/lib/jdate.js");
 
 
 });
 
-require.register("arashm~jdate@master/lib/converter.js", function (exports, module) {
+require.register("arashm~jdate@v0.1.1/lib/converter.js", function (exports, module) {
 (function (root) {
 
 /*
@@ -1182,13 +1204,13 @@ function d2g(jdn) {
 
 });
 
-require.register("arashm~jdate@master/lib/jdate.js", function (exports, module) {
+require.register("arashm~jdate@v0.1.1/lib/jdate.js", function (exports, module) {
 /*
  * https://github.com/arashm/JDate
  * @author: Arash Mousavi
- * @version: 0.1.0
+ * @version: 0.1.1
  */
-var jalali = require("arashm~jdate@master/lib/converter.js")
+var jalali = require("arashm~jdate@v0.1.1/lib/converter.js")
     , map = require("component~map@0.0.1");
 
 module.exports = JDate;
@@ -1426,10 +1448,12 @@ JDate.daysInMonth = function (year, month) {
   if (month < 0) {
     month += 12
     year -= 1
+  } else if (month == 0) {
+    month = 12
   }
-  if (month < 6) {
+  if (month <= 6) {
     return 31
-  } else if (month < 11) {
+  } else if (month <= 11) {
     return 30
   } else if (JDate.isLeapYear(year)) {
     return 30
@@ -1439,28 +1463,6 @@ JDate.daysInMonth = function (year, month) {
 }
 
 
-});
-
-require.register("component~in-groups-of@1.0.0", function (exports, module) {
-
-module.exports = function(arr, n){
-  var ret = [];
-  var group = [];
-  var len = arr.length;
-  var per = len * (n / len);
-
-  for (var i = 0; i < len; ++i) {
-    group.push(arr[i]);
-    if ((i + 1) % n == 0) {
-      ret.push(group);
-      group = [];
-    }
-  }
-
-  if (group.length) ret.push(group);
-
-  return ret;
-};
 });
 
 require.register("jcal", function (exports, module) {
@@ -1475,7 +1477,7 @@ var event = require("component~event@0.1.4")
   , domify = require("component~domify@1.2.2")
   , template = require("jcal/lib/template.js")
   , classes = require("component~classes@1.2.1")
-  , jdate = require("arashm~jdate@master")
+  , jdate = require("arashm~jdate@v0.1.1")
   , inGroupsOf = require("component~in-groups-of@1.0.0")
   , Emitter = require("component~emitter@1.1.3")
   , normalize = require("stephenmathieson~normalize@0.0.1")

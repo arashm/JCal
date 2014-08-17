@@ -1,7 +1,7 @@
 /*
  * https://github.com/arashm/JDate
  * @author: Arash Mousavi
- * @version: 0.1.0
+ * @version: 0.1.1
  */
 var jalali = require('./converter')
     , map = require('map');
@@ -241,10 +241,12 @@ JDate.daysInMonth = function (year, month) {
   if (month < 0) {
     month += 12
     year -= 1
+  } else if (month == 0) {
+    month = 12
   }
-  if (month < 6) {
+  if (month <= 6) {
     return 31
-  } else if (month < 11) {
+  } else if (month <= 11) {
     return 30
   } else if (JDate.isLeapYear(year)) {
     return 30
