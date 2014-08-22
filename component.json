@@ -9,7 +9,7 @@
     "sun",
     "shamsi"
   ],
-  "repository": "arashm/jcal",
+  "repository": "arashm/JCal",
   "scripts": [
     "index.js",
     "lib/jcal.js",

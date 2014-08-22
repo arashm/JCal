@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/arashm/Jalali-Calendar.git"
+    "url": "git://github.com/arashm/JCal.git"
   },
   "keywords": [
     "jalali",
@@ -18,9 +18,9 @@
   "author": "Arash Mousavi",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/arashm/Jalali-Calendar/issues"
+    "url": "https://github.com/arashm/JCal/issues"
   },
-  "homepage": "https://github.com/arashm/Jalali-Calendar",
+  "homepage": "https://github.com/arashm/JCal",
   "devDependencies": {
     "gulp": "^3.8.6",
     "gulp-autoprefixer": "0.0.8",
